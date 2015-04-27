@@ -1,0 +1,68 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../libs/odometer-import.html">
+
+<polymer-element name="creuna-counter" attributes="key, backgroundImage, heading">
+    <template>
+        <link rel="stylesheet" href="/libs/odometer/odometer-theme-default.css" />
+        <style>
+            :host {
+                /* Note: by default elements are always display:inline. */
+                display: block;
+                padding: 1em;
+            }
+
+            creuna-counter {
+                opacity: 1;
+                transition: opacity 300ms;
+            }
+
+                creuna-counter:unresolved {
+                    opacity: 0;
+                }
+
+            img {
+                width: 100px;
+            }
+
+            #counter {
+                font-size: 4em;
+                padding-left: 100px;
+                background-position: left center;
+                background-size: 100px auto;
+                background-repeat: no-repeat;
+            }
+        </style>
+
+        <h2>{{heading}}</h2>
+        <div class="odometer" id="counter" style="background-image:  url('{{backgroundImage}}')">{{value}}<</div>
+    </template>
+    <script>
+        Polymer({
+            ready: function () {
+                var counter = this.$.counter;
+                var od = new Odometer({
+                    el: counter,
+                    value: 0,
+                    format: 'd',
+                    theme: 'default'
+                });
+
+                var update = function (that) {
+                    if (that.key == "") {
+                        setTimeout(function () { update(that); }, 10000);
+                    } else {
+                        $.get('/api/datapoints/' + that.key, {}, function (data) {
+                            console.log("Updating to " + data.value);
+                            that.imageUrl = data.imageUrl;
+                            od.update(data.value);
+                            that.title = data.title;
+                        }).done(function () {
+                            setTimeout(function () { update(that); }, 10000);
+                        });
+                    }
+                };
+                update(this);
+            }
+        });
+    </script>
+</polymer-element>

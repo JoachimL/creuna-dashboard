@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="/libs/odometer/odometer-theme-default.css" />
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js"></script>
+    <!-- 1. Load platform support before any code that touches the DOM. -->
+    <script src="/bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <!-- 2. Load the component using an HTML Import -->
+    <link rel="import" href="/elements/creuna-counter.html" />
+    <link rel="import" href="/elements/creuna-truefalseimage.html" />
+    <style type="text/css">
+        body {
+            margin: 0;
+            color: #2c2c2c;
+            font-weight: 300;
+            background: #f0f0f0;
+            word-wrap: break-word;
+            min-height: 100%;
+            width: 100%;
+            font-family: "Source Sans Pro",sans-serif;
+            background-color: #eeeeee;
+        }
+
+        .widget {
+            border: 2px solid #2c2c2c;
+            background-color: #ffffff;
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Creuna</h1>
+    <div class="widget-container">
+        <creuna-counter class="widget" key="coffee" heading="Cups of coffee consumed" backgroundImage="/images/iconmonstr-coffee-2-icon.svg"></creuna-counter>
+        <creuna-truefalseimage class="widget" key="isitfriday" yesimage="/images/tgif.png" noimage="/images/isNotFriday.png"></creuna-truefalseimage>
+    </div>
+    
+    <script src="/bower_components/masonry/dist/masonry.pkgd.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var container = document.querySelector('.widget-container');
+            var msnry = new Masonry(container, {
+                // options
+                itemSelector: '.widget'
+            });
+        });
+    </script>
+
+    <!--<div id="countertest"></div>
+
+    <script src="/libs/odometer/odometer.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var od = new Odometer({
+                el: document.querySelector('#countertest'),
+                value: 0,
+
+                // Any option (other than auto and selector) can be passed in here
+                format: '',
+                theme: 'default'
+            });
+            var update = function (current) {
+                od.update(current);
+                if (current < 10)
+                    setTimeout(function () { update(current + 1); }, 1000);
+            };
+            update(1);
+        });
+    </script>-->
+    <script>
+        //$(document).ready(function () {
+        //    window.odometerOptions = {
+        //        auto: true, // Don't automatically initialize everything with class 'odometer'
+        //        format: 'd',
+        //        //duration: 3000, // Change how long the javascript expects the CSS animation to take
+        //        theme: 'default', // Specify the theme (if you have more than one theme css file on the page)
+        //    };
+        //});
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../libs/odometer-import.html">
+
+<polymer-element name="creuna-truefalseimage" attributes="key, yesImage, noImage">
+    <template>
+        <link rel="stylesheet" href="/libs/odometer/odometer-theme-default.css" />
+        <style>
+            :host {
+                /* Note: by default elements are always display:inline. */
+                display: block;
+                padding: 1em;
+            }
+
+            creuna-truefalseimage {
+                opacity: 1;
+                transition: opacity 300ms;
+            }
+
+                creuna-truefalseimage:unresolved {
+                    opacity: 0;
+                }
+
+            #container {
+                position: relative;
+            }
+
+            img {
+                position: absolute;
+                opacity: 0;
+                min-height: 200px;
+                width: 100%;
+                -webkit-transition: opacity 1s ease-in-out;
+                -moz-transition: opacity 1s ease-in-out;
+                -o-transition: opacity 1s ease-in-out;
+                transition: opacity 1s ease-in-out;
+            }
+
+                img.active {
+                    opacity: 1;
+                }
+        </style>
+        <div id="container"></div>
+        <img id="yes" src="{{yesImage}}" />
+        <img id="no" src="{{noImage}}" />
+    </template>
+    <script>
+        Polymer({
+            ready: function () {
+
+                var that = this;
+                var switchActive = function (active, inactive) {
+                    inactive.className = inactive.className.replace(/(?:^|\s)active(?!\S)/g, '');
+                    active.className = inactive.className.replace(/(?:^|\s)active(?!\S)/g, '');
+                    active.className = active.className + ' active';
+                }
+
+                var setYesActive = function () {
+                    switchActive(that.$.yes, that.$.no);
+                }
+
+                var setNoActive = function () {
+                    switchActive(that.$.no, that.$.yes);
+                }
+
+                var update = function () {
+                    if (that.key == "") {
+                        setTimeout(function () { update(); }, 10000);
+                    } else {
+                        $.get('/api/datapoints/' + that.key, {}, function (data) {
+                            if (data.value) {
+                                setYesActive();
+                            } else {
+                                setNoActive();
+                            }
+                        }).done(function () {
+                            setTimeout(function () { update(); }, 1000);
+                        });
+                    }
+                };
+                update(this);
+            }
+        });
+    </script>
+</polymer-element>
