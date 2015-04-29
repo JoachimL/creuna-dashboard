@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
+using Creuna.Dashboard.Entities;
 using Creuna.Dashboard.ViewModels;
 
 namespace Creuna.Dashboard.Controllers
@@ -23,5 +25,8 @@ namespace Creuna.Dashboard.Controllers
             }
             throw new HttpResponseException(HttpStatusCode.NotFound);
         }
+
+            //[Route("")]
+            //public IEnumerable<DataPoint
     }
 }
